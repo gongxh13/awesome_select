@@ -1005,7 +1005,6 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
   /// Returns the modal widget
   Widget get modal {
     return S2Modal(
-      key: ValueKey(modalConfig.type),
       onReady: onModalOpen,
       builder: (context, setState) {
         modalContext = context;
