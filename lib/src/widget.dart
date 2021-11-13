@@ -1681,7 +1681,7 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
     super.didUpdateWidget(oldWidget);
 
     // reset the initial choices
-    if (oldWidget.choiceItems != widget.choiceItems) resolveChoices();
+    // if (oldWidget.choiceItems != widget.choiceItems) resolveChoices();
   }
 
   @override
