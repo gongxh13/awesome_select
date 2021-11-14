@@ -314,7 +314,7 @@ class S2SingleSelected<T> extends S2Selected<T> with S2SingleChosenData<T> {
   S2SingleSelectedResolver<T?>? resolver;
 
   @override
-  void resolve({
+  Future<void> resolve({
     S2SingleSelectedResolver<T?>? defaultResolver,
   }) async {
     if (isResolved) return null;
@@ -402,7 +402,7 @@ class S2MultiSelected<T> extends S2Selected<T> with S2MultiChosenData<T> {
   S2MultiSelectedResolver<T>? resolver;
 
   @override
-  void resolve({
+  Future<void> resolve({
     S2MultiSelectedResolver<T>? defaultResolver,
   }) async {
     if (isResolved) return null;

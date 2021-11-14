@@ -1636,7 +1636,7 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
   }
 
   /// Initiate the [selected] choice
-  void resolveSelected();
+  Future<void> resolveSelected();
 
   /// Function to resolve the selected
   void resolveSelection();
@@ -1755,21 +1755,29 @@ class S2SingleState<T> extends S2State<T?> {
   }
 
   @override
-  void resolveSelected() async {
+  Future<void> resolveSelected() async {
     selected?.dispose();
     if (widget.singleSelected != null) {
       selected = widget.singleSelected!
-        ..addListener(_selectedHandler)
-        ..resolve(defaultResolver: (T? value) async {
-          return widget.choiceItems?.firstWhereOrNull(
-            (S2Choice<T?> item) => item.value == value,
-          );
-        });
+        ..addListener(_selectedHandler);
+      await selected?.resolve(
+          defaultResolver: (T? value) async {
+            return widget.choiceItems?.firstWhereOrNull(
+                  (S2Choice<T?> item) => item.value == value,
+            );
+          }
+      );
+        // ..resolve(defaultResolver: (T? value) async {
+        //   return widget.choiceItems?.firstWhereOrNull(
+        //     (S2Choice<T?> item) => item.value == value,
+        //   );
+        // });
     }
   }
 
   @override
   void resolveSelection() async {
+    await resolveSelected();
     // set the initial selection
     selection = S2SingleSelection<T?>(
       initial: selected!.choice,
@@ -1960,23 +1968,34 @@ class S2MultiState<T> extends S2State<T> {
   }
 
   @override
-  void resolveSelected() async {
-    selected?.dispose();
+  Future<void> resolveSelected() async {
+    // selected?.dispose();
     if (widget.multiSelected != null) {
       selected = widget.multiSelected!
-        ..addListener(_selectedHandler)
-        ..resolve(defaultResolver: (List<T>? value) async {
-          return widget.choiceItems
-              ?.where(
-                  (S2Choice<T> item) => value?.contains(item.value) ?? false)
-              .toList()
-              .cast<S2Choice<T>>();
-        });
+        ..addListener(_selectedHandler);
+
+      await selected?.resolve(
+          defaultResolver: (List<T>? value) async {
+            return widget.choiceItems
+                ?.where(
+                    (S2Choice<T> item) => value?.contains(item.value) ?? false)
+                .toList()
+                .cast<S2Choice<T>>();
+          }
+      );
+        // ..resolve(defaultResolver: (List<T>? value) async {
+        //   return widget.choiceItems
+        //       ?.where(
+        //           (S2Choice<T> item) => value?.contains(item.value) ?? false)
+        //       .toList()
+        //       .cast<S2Choice<T>>();
+        // });
     }
   }
 
   @override
-  void resolveSelection() {
+  Future<void> resolveSelection() async {
+    await resolveSelected();
     // set the initial selection
     selection = S2MultiSelection<T>(
       initial: selected!.choice,
