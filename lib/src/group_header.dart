@@ -31,10 +31,10 @@ class S2GroupHeader extends StatelessWidget {
             style!.crossAxisAlignment ?? CrossAxisAlignment.center,
         mainAxisAlignment:
             style!.mainAxisAlignment ?? MainAxisAlignment.spaceBetween,
-        children: (<Widget>[
-          title,
-          if(trailing != null) trailing!,
-        ]),
+          children: [
+            title,
+            trailing,
+        ].whereType<Widget>().toList(),
       ),
     );
   }

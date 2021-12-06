@@ -45,7 +45,7 @@ testSmartSelect<T>({
   S2ChoiceType? choiceType,
   String placeholder = 'Select one',
 }) {
-  S2Choice<T?>? selectedChoice = initialChoice;
+  S2Choice<T>? selectedChoice = initialChoice;
 
   testWidgets(title, (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -53,7 +53,7 @@ testSmartSelect<T>({
         child: SmartSelect<T>.single(
           title: title,
           placeholder: placeholder,
-          selectedValue: selectedChoice?.value,
+          selectedValue: selectedChoice!.value,
           choiceItems: choiceItems,
           modalType: modalType,
           choiceType: choiceType,

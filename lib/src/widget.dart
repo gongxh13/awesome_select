@@ -374,9 +374,9 @@ class SmartSelect<T> extends StatefulWidget {
     Key? key,
     String? title,
     String placeholder = 'Select one',
-    T? selectedValue,
+    required T selectedValue,
     S2Choice<T>? selectedChoice,
-    S2SingleSelectedResolver<T?>? selectedResolver,
+    S2SingleSelectedResolver<T>? selectedResolver,
     ValueChanged<S2SingleSelected<T>>? onChange,
     S2ChoiceSelect<S2SingleState<T>, S2Choice<T>>? onSelect,
     S2ModalOpen<S2SingleState<T>>? onModalOpen,
@@ -841,8 +841,8 @@ class SmartSelect<T> extends StatefulWidget {
   }
 
   @override
-  S2State<T?> createState() {
-    return isMultiChoice ? S2MultiState<T?>() : S2SingleState<T>();
+  S2State<T> createState() {
+    return isMultiChoice ? S2MultiState<T>() : S2SingleState<T>();
   }
 }
 
@@ -1696,14 +1696,14 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
 }
 
 /// State for Single Choice
-class S2SingleState<T> extends S2State<T?> {
+class S2SingleState<T> extends S2State<T> {
   /// State of the selected choice(s)
   @override
-  S2SingleSelected<T?>? selected;
+  S2SingleSelected<T>? selected;
 
   /// State of choice(s) selection in the modal
   @override
-  S2SingleSelection<T?>? selection;
+  S2SingleSelection<T>? selection;
 
   @override
   void onChange() {
@@ -1714,7 +1714,7 @@ class S2SingleState<T> extends S2State<T?> {
   }
 
   @override
-  void onSelect(S2Choice<T?> choice) {
+  void onSelect(S2Choice<T> choice) {
     widget.singleOnSelect?.call(this, choice);
   }
 
@@ -1745,12 +1745,12 @@ class S2SingleState<T> extends S2State<T?> {
   }
 
   @override
-  S2Validation<S2SingleChosen<T?>>? get validation {
+  S2Validation<S2SingleChosen<T>>? get validation {
     return widget.singleValidation;
   }
 
   @override
-  S2Validation<S2SingleChosen<T?>>? get modalValidation {
+  S2Validation<S2SingleChosen<T>>? get modalValidation {
     return widget.singleModalValidation ?? validation;
   }
 
@@ -1779,7 +1779,7 @@ class S2SingleState<T> extends S2State<T?> {
   void resolveSelection() async {
     await resolveSelected();
     // set the initial selection
-    selection = S2SingleSelection<T?>(
+    selection = S2SingleSelection<T>(
       initial: selected!.choice,
       validation: modalValidation,
     )
@@ -1788,7 +1788,7 @@ class S2SingleState<T> extends S2State<T?> {
   }
 
   @override
-  void didUpdateWidget(SmartSelect<T?> oldWidget) {
+  void didUpdateWidget(SmartSelect<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     // reset the initial value
@@ -1875,13 +1875,13 @@ class S2SingleState<T> extends S2State<T?> {
   }
 
   @override
-  Widget? choiceBuilder(S2Choice<T?> choice) {
+  Widget? choiceBuilder(S2Choice<T> choice) {
     return builder!.choice?.call(modalContext, this, choice) ??
         choiceResolver.choiceBuilder?.call(modalContext, choice);
   }
 
   @override
-  Widget? choiceTitle(S2Choice<T?> choice) {
+  Widget? choiceTitle(S2Choice<T> choice) {
     return choice.title != null
         ? builder?.choiceTitle?.call(modalContext, this, choice) ??
             defaultChoiceTitle(choice)
@@ -1889,7 +1889,7 @@ class S2SingleState<T> extends S2State<T?> {
   }
 
   @override
-  Widget? choiceSubtitle(S2Choice<T?> choice) {
+  Widget? choiceSubtitle(S2Choice<T> choice) {
     return choice.subtitle != null
         ? builder?.choiceSubtitle?.call(modalContext, this, choice) ??
             defaultChoiceSubtitle(choice)
