@@ -201,7 +201,7 @@ class S2Tile<T> extends StatelessWidget {
     return isLoading != true
         ? trailing != null
             ? trailing
-            : S2Tile.defaultTrailing
+            : null
         : S2Tile.defaultLoadingIndicator;
   }
 
